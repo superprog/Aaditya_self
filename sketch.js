@@ -82,6 +82,7 @@ function setup() {
   //ghost
   ghost = createSprite (200, 200, 50, 50);
   ghost.scale = 0.3;
+ // ghost.debug=true
   ghost.addImage("ghost",ghostImage);
   ghost.addImage("jumping",ghostImage2);
   
@@ -103,17 +104,10 @@ function draw() {
  
   
    //displaying coins
-  stroke("black");
-    fill("black");
-      textSize(20);
   
-  text("Coins:"+  coinText, 10, 30);
   
   //displaying score
-  stroke("black");
-    fill("black");
-      textSize(20);
-  text("Score:"+  score, 300, 30);
+  
   
   //gamestate serve
   if(gamestate === "serve") {
@@ -134,7 +128,7 @@ if(gamestate === "play") {
   
   
   //sound
-  con.play();
+  //con.play();
   score = Math.ceil(frameCount/frameRate());
      
   
@@ -173,35 +167,55 @@ if(gamestate === "play") {
   doors();
   coin();
   
+
   //Draw Sprites
   drawSprites();
+  
+
 }
+
+
   //game state END
   if(gamestate === "end") {
     stroke("yellow");
-    fill("yellow");
+    fill("red");
     textSize(30);
     text("Gameover", 230, 250);
-    
-    
+    fill("yellow");
+text("press R to restart",210,290);
+
+if(keyDown("R") && gamestate==="end")
+    restart();
   }
+  stroke("black");
+    fill("black");
+      textSize(20);
+  
+  text("Coins:"+  coinText, 10, 30);
+
+  stroke("black");
+    fill("black");
+      textSize(20);
+  text("Score:"+  score, 300, 30);
 }
 
 //Function Doors
 function doors() {
   //door
   if(frameCount % 240 === 0 ) {
-    door = createSprite(200, 50, 10, 10);
-    door.x = random(120,400);
+    door = createSprite(Math.round(random(120,400)),-50, 10, 10);
+    //door.x = random(80,450);
+    console.log(door.x)
     door.velocityY = 1;
+    //door.debug=true;
     door.addImage(doorImage);
     door.lifetime = 800;
-    door.visible = false;
+    door.visible = true;
     
     //climber
     climber = createSprite (200, 10, 10, 10);
   climber.addImage(climberImage);
-    door.x = climber.x;
+  climber.x = door.x;
     climber.velocityY = 1;
     climber.lifetime = 800;
     
@@ -229,6 +243,7 @@ function doors() {
 
 function coin() {
   //coins
+  console.log("hello")
   if(frameCount % 200 === 0 ) {
     
     //coin
@@ -241,4 +256,16 @@ function coin() {
     coinsGroup.add(coins);
   
   }
+
+
+}
+function restart()  {
+  coin = 0;
+  score = 0;
+  gamestate = "play"
+  console.log(gamestate)
+
+
+
+
 }
